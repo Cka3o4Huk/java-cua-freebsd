@@ -27,6 +27,7 @@ Java_ru_unclebear_test_serial_NativeMain_getSerials
   (JNIEnv *env, jclass cls)
 {
 	int		 len, i;
+	char		 tmp[MAXNAMLEN + 6];
 	struct dirent	*dp;
 	DIR		*dirp;
 	jclass		 stringClass;
@@ -67,7 +68,9 @@ Java_ru_unclebear_test_serial_NativeMain_getSerials
 		len--;
 		if(len < 0)
 			break;
-		val = (*env)->NewStringUTF(env, dp->d_name);
+		strcpy(tmp, DEV "/");
+		strcat(tmp, dp->d_name);
+		val = (*env)->NewStringUTF(env, tmp);
 		(*env)->SetObjectArrayElement(env, ret, i++, val);
 		(*env)->DeleteLocalRef(env, val);
 	}
